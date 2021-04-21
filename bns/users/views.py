@@ -19,6 +19,7 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
-@login_required  # decorator to require a logged in user to see the profile.html
+@login_required  # decorator to require a logged in user to see the profile.html so when trying to access
+# the profile page directly without being logged in, it would ask to log in and redirect to profile after
 def profile(request):
     return render(request, 'users/profile.html')
