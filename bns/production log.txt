@@ -4,4 +4,4 @@
     Happens because author in the Post model is a foreign key to the User model
 
     dog.shelter_set.all() would display all dogs from the shelter, if set up correctly
-2.
+2. Ask Laurent about 4 apps of Apocalypse (admin is a separate app???)
