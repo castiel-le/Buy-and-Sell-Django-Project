@@ -1,0 +1,8 @@
+1. in manage.py shell: to query for all posts ofa user:
+    user.post_set.all() - in this case post is the name of the model, could be anything.
+    user is User.objects.filter(username='student').first()
+    Happens because author in the Post model is a foreign key to the User model
+
+    dog.shelter_set.all() would display all dogs from the shelter, if set up correctly
+2. Ask Laurent about 4 apps of Apocalypse (admin is a separate app???) Answer: no, you dont have to
+3. Install pip install django-crispy-forms
