@@ -2,10 +2,10 @@
 {% block content %}
 {#    have to change post. to object. due to django naming convention#}
     <article class="media content-section">
-        <img src="{{ object.author.profile.image.url }}" class="rounded-circle article-img">
+        <img src="{{ object.author.profile.image.url }}" class="rounded-circle article-img" alt="profile pic">
         <div class="media-body">
             <div class="article-metadata">
-                <a class="mr-2" href="#">{{ object.author }}</a>
+                <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
                 <small class="text-muted">{{ object.date_posted }}</small>
                 {% if object.author == user %}
                     <div>
