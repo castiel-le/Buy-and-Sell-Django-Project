@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -14,3 +15,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    # There are two ways doing the redirection after post creation. If we want to see the post created
+    # in its own view, we use the following,
+    # If we want it to just jump to home page, go to blog/views and see success_url
+    # def get_absolute_url(self):
+    #     # this is going to send us to the newly created post page after creating it
+    #     # return reverse('post-detail', kwargs={'pk':self.pk})
