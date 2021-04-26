@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # views handle routes to html pages, generally speaking
 
@@ -31,7 +31,7 @@ class PostDetailView(DetailView):  # each single post page
     model = Post
 
 
-class PostCreateView(SuccessMessageMixin, CreateView):  # creating new post view
+class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):  # creating new post view
     model = Post
     fields = ['title', 'content']
     success_url = reverse_lazy('blog-home')
@@ -41,6 +41,37 @@ class PostCreateView(SuccessMessageMixin, CreateView):  # creating new post view
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixin, UpdateView):  # creating new post view
+    model = Post
+    fields = ['title', 'content']
+    success_url = reverse_lazy('blog-home')
+    success_message = "Post  about %(title)s was updated"
+
+    #  need to override for to set an author for the post
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # part of mixins, blocks users from editing other user's posts
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+
+class PostDeleteView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixin, DeleteView):  # each single post page
+    model = Post
+    success_message = "Post  about %(title)s was deleted"
+    success_url = reverse_lazy('blog-home')
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 
 # about page, nothing here yet anyway
