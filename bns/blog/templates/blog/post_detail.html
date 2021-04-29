@@ -17,6 +17,13 @@
             </div>
             <h2 class="article-title">{{ object.title }}</h2>
             <p class="article-content">{{ object.content }}</p>
+            <div class="row">
+                {% for pic in post.images_set.all %}
+                    <div class="col-md-4">
+                        <img src="{{ pic.image.url }}" class="img-fluid">
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </article>
 {% endblock content %}
