@@ -30,10 +30,9 @@ class Post(models.Model):
     #     # this is going to send us to the newly created post page after creating it
 #     # return reverse('post-detail', kwargs={'pk':self.pk})
 
-    def save(self):
+    def save(self, *args, **kwargs):
         # resizing images because we can, using pillow library mentioned in class
-        super().save()
-
+        super(Post, self).save(*args, **kwargs)
         img = Image.open(self.image.path)
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
