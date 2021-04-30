@@ -4,5 +4,6 @@
     Happens because author in the Post model is a foreign key to the User model
 
     dog.shelter_set.all() would display all dogs from the shelter, if set up correctly
-2. Ask Laurent about 4 apps of Apocalypse (admin is a separate app???) Answer: no, you dont have to
-3. Install pip install django-crispy-forms
+2. Ask Laurent about 4 apps of Apocalypse (admin is a separate app???) Answer: no, you dont have to.
+3. Install pip install django-crispy-forms.
+4. Migrate SQLite3 to postgresql, basically changing the db.
