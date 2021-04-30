@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\Kirill\Dawson\sem 4\Python\buy-and-sell-django-project\bns\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="db [2]" uuid="401d4548-a344-4a8e-a372-a4bf77738416">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\sosol\OneDrive\Documents\school\winter 2021\python\projects\420-420-team1\bns\db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
