@@ -12,9 +12,9 @@ class Profile(models.Model):
         return f'{self.user.username} Profile'
     # this thing is what we see on the profile page in admin
 
-    def save(self):
+    def save(self, *args, **kwargs):
         # resizing images because we can, using pillow library mentioned in class
-        super().save()
+        super(Profile, self).save(*args, **kwargs)
 
         img = Image.open(self.image.path)
         if img.height > 300 or img.width > 300:
