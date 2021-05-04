@@ -6,4 +6,7 @@
     dog.shelter_set.all() would display all dogs from the shelter, if set up correctly
 2. Ask Laurent about 4 apps of Apocalypse (admin is a separate app???) Answer: no, you dont have to.
 3. Install pip install django-crispy-forms.
-4. Migrate SQLite3 to postgresql, basically changing the db. The postgresql username: postgres; password: admin
+4. Migrate SQLite3 to postgresql, basically changing the db. 
+5. To log in postgresql via cmd: The postgresql username: postgres; password: admin
+   To log in Django Administration: username: admin; password: admin
+6. alec profile(postgres): alec-wokemon297
