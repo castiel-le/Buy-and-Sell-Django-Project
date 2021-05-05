@@ -1,10 +1,16 @@
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+
+from .forms import ImageForm, PostForm, CommentForm
+from .models import Post, Images, Comment
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.models import User
+from django.forms import modelformset_factory
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 
 # views handle routes to html pages, generally speaking
 
@@ -40,15 +46,37 @@ class UserPostListView(ListView):  # to display homepage with posts
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-date_posted')
 
+
 # view for each individual post
 #
 class PostDetailView(DetailView):  # each single post page
     model = Post
 
+    def post_detailview(self, id):
+        post = Post.objects.get(id=id)
+        comments = Comment.objects.filter(post=post).order_by("-id")
+        if self.method == 'POST':
+            cf = CommentForm(self.POST or None)
+            if cf.is_valid():
+                content = self.POST.get('content')
+                comment = Comment.objects.create(post=post, user=self.user, content=content)
+                comment.save()
+                return redirect(post.get_absolute_url())
+            else:
+                cf = CommentForm()
+
+            context = {
+                'title': 'Post Details',
+                'comments': comments,
+                'object': post,
+                'comment_form': cf,
+            }
+            return render(self, 'blog / post_ detail.html', context)
+
 
 class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):  # creating new post view
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'image']
     success_url = reverse_lazy('blog-home')
     success_message = "Post  about %(title)s was created"
 
@@ -58,9 +86,10 @@ class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):  # cr
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixin, UpdateView):  # creating new post view
+class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixin,
+                     UpdateView):  # creating new post view
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'image']
     success_url = reverse_lazy('blog-home')
     success_message = "Post  about %(title)s was updated"
 
@@ -92,3 +121,4 @@ class PostDeleteView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixi
 # about page, nothing here yet anyway
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
+

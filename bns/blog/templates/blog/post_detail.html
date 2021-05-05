@@ -17,6 +17,43 @@
             </div>
             <h2 class="article-title">{{ object.title }}</h2>
             <p class="article-content">{{ object.content }}</p>
+            <div class="row">
+                {% for pic in post.images_set.all %}
+                    <div class="col-md-4">
+                        <img src="{{ pic.image.url }}" class="img-fluid">
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </article>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{comment_form.as_p}}
+      <input type="submit" name="comment">
+    </form>
+
+    <div class="main-comment-section">
+        {{comments.count}} Comment{{comments|pluralize}}
+    </div>
+
+    {% for comment in comments %}
+        <blockquote class="blockquote">
+            <p>{{ comment.content}}</p>
+            <footer class="blockquote-footer">
+                By <cite>{{comment.user|capfirst}}
+
+                    {% ifequal  object.author.id user.id%}
+                        <a href="{% url 'blog-comment' comment.id %}" style="color: #585858;"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                    {% endifequal %}
+                    {% ifequal comment.user.id user.id%}
+                        {% ifequal comment.user.id object.author.id%}
+                        {% else %}
+                            <a href="{% url 'blog-comment' comment.id %}" style="color: #585858;"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                        {% endifequal %}
+                    {% endifequal %}
+                </cite>
+            </footer>
+        </blockquote>
+    {% endfor %}
 {% endblock content %}

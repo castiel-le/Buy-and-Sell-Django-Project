@@ -11,6 +11,14 @@
                 </div>
                 <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
                 <p class="article-content">{{ post.content }}</p>
+                <img src="media/{{ post.image }}">
+                <div class="row">
+                {% for pic in post.images_set.all %}
+                    <div class="col-md-4">
+                        <img src="{{ pic.image.url }}" class="img-fluid">
+                    </div>
+                {% endfor %}
+            </div>
             </div>
         </article>
     {% endfor %}
