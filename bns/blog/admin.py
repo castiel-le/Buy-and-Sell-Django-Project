@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Post, Images
+from .models import Post, Images, Comment
 
 
 class PostImageAdmin(admin.StackedInline):
@@ -18,3 +18,14 @@ class PostAdmin(admin.ModelAdmin):
 @admin.register(Images)
 class PostImageAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'content', 'post', 'created_on', 'active')
+    list_filter = ('active', 'created_on')
+    search_fields = ('user', 'content')
+    actions = ['approve_comments']
+
+    def approve_comments(self, request, queryset):
+        queryset.update(active=True)

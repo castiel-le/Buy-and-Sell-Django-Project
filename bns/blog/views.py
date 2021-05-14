@@ -52,26 +52,28 @@ class UserPostListView(ListView):  # to display homepage with posts
 class PostDetailView(DetailView):  # each single post page
     model = Post
 
-    def post_detailview(self, id):
-        post = Post.objects.get(id=id)
-        comments = Comment.objects.filter(post=post).order_by("-id")
-        if self.method == 'POST':
-            cf = CommentForm(self.POST or None)
-            if cf.is_valid():
-                content = self.POST.get('content')
-                comment = Comment.objects.create(post=post, user=self.user, content=content)
-                comment.save()
-                return redirect(post.get_absolute_url())
-            else:
-                cf = CommentForm()
+    def post_detail_view(request, pk):
+        template_name = 'post_detail.html'
+        post = get_object_or_404(Post, pk=pk)
+        comments = post.comments.filter(active=True)
+        new_comment = None
+        # Comment posted
+        if request.method == 'POST':
+            comment_form = CommentForm(data=request.POST)
+            if comment_form.is_valid():
+                # Create Comment object but don't save to database yet
+                new_comment = comment_form.save(commit=False)
+                # Assign the current post to the comment
+                new_comment.post = post
+                # Save the comment to the database
+                new_comment.save()
+        else:
+            comment_form = CommentForm()
 
-            context = {
-                'title': 'Post Details',
-                'comments': comments,
-                'object': post,
-                'comment_form': cf,
-            }
-            return render(self, 'blog / post_ detail.html', context)
+        return render(request, template_name, {'post': post,
+                                               'comments': comments,
+                                               'new_comment': new_comment,
+                                               'comment_form': comment_form})
 
 
 class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):  # creating new post view
