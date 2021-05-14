@@ -1,10 +1,10 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from .forms import ImageForm, PostForm
-from .models import Post, Images
+from .forms import ImageForm, PostForm, CommentForm
+from .models import Post, Images, Comment
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.models import User
 from django.forms import modelformset_factory
@@ -51,6 +51,29 @@ class UserPostListView(ListView):  # to display homepage with posts
 #
 class PostDetailView(DetailView):  # each single post page
     model = Post
+
+    def post_detail_view(request, pk):
+        template_name = 'post_detail.html'
+        post = get_object_or_404(Post, pk=pk)
+        comments = post.comments.filter(active=True)
+        new_comment = None
+        # Comment posted
+        if request.method == 'POST':
+            comment_form = CommentForm(data=request.POST)
+            if comment_form.is_valid():
+                # Create Comment object but don't save to database yet
+                new_comment = comment_form.save(commit=False)
+                # Assign the current post to the comment
+                new_comment.post = post
+                # Save the comment to the database
+                new_comment.save()
+        else:
+            comment_form = CommentForm()
+
+        return render(request, template_name, {'post': post,
+                                               'comments': comments,
+                                               'new_comment': new_comment,
+                                               'comment_form': comment_form})
 
 
 class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):  # creating new post view
