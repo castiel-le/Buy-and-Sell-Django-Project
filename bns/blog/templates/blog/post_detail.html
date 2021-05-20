@@ -1,4 +1,7 @@
 {% extends 'blog/base.html' %}
+{% load crispy_forms_filters %}
+{% load crispy_forms_tags %}
+
 {% block content %}
 {#    have to change post. to object. due to django naming convention#}
     <article class="media content-section">
@@ -54,9 +57,9 @@
         </div>
         {% else %}
         <h3>Leave a comment</h3>
-        <form method="post" style="margin-top: 1.3em;">
-          {% csrf_token %}
+        <form method="Post">
           {{ comment_form.as_p }}
+          {% csrf_token %}
           <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
         </form>
         {% endif %}
