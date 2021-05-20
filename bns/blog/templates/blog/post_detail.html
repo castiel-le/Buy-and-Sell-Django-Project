@@ -21,7 +21,7 @@
             </div>
             <h2 class="article-title">{{ object.title }}</h2>
             <p class="article-content">{{ object.content }}</p>
-            <img src="{{ post.image.url }}" alt="">
+            <img src="{{ object.image.url }}" alt="">
             <div class="row">
                 {% for pic in post.images_set.all %}
                     <div class="col-md-4">
@@ -35,9 +35,9 @@
     <div class="col-md-8 card mb-4  mt-3 ">
       <div class="card-body">
         <!-- comments -->
-        <h3>{{ comments.count }} Comments</h3>
+        <h3>{{ post.comments.count }} Comments</h3>
 
-        {% for comment in comments %}
+        {% for comment in post.comments.all %}
         <div class="comments" style="padding: 10px;">
           <p class="font-weight-bold">
             {{ comment.user }}
@@ -45,7 +45,11 @@
               {{ comment.created_on }}
             </span>
           </p>
-          {{ comment.content | linebreaks }}
+            {% if comment.active %}
+                {{ comment.content | linebreaks }}
+            {% else %}
+                <p class="text-muted small">Your comment is being moderated</p>
+            {% endif %}
         </div>
         {% endfor %}
       </div>
@@ -53,18 +57,14 @@
 
     <div class="col-md-8 card mb-4  mt-3 ">
       <div class="card-body">
-        {% if new_comment %}
-        <div class="alert alert-success" role="alert">
-          Your comment is awaiting moderation
-        </div>
-        {% else %}
+
         <h4>Leave a comment</h4>
         <form method="post" style="margin-top: 1.3em;">
           {% csrf_token %}
           {{ comment_form.as_p }}
           <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
         </form>
-        {% endif %}
+
       </div>
     </div>
 

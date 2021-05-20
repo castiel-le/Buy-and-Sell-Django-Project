@@ -89,7 +89,7 @@ class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):  # cr
 
 
 class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixin,
-                     UpdateView):  # creating new post view
+                     UpdateView):
     model = Post
     fields = ['title', 'content', 'image']
     success_url = reverse_lazy('blog-home')
