@@ -53,11 +53,7 @@
               {{ comment.created_on }}
             </span>
           </p>
-            {% if comment.active %}
-                {{ comment.content | linebreaks }}
-            {% else %}
-                <p class="text-muted small">Your comment is being moderated</p>
-            {% endif %}
+            {{ comment.content | linebreaks }}
         </div>
         {% endfor %}
       <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-comment' object.id %}">Comment</a>
