@@ -10,6 +10,7 @@
             <div class="article-metadata">
                 <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
                 <small class="text-muted">{{ object.date_posted }}</small>
+                <p class="text-capitalize">Price: {{ post.price }}</p>
                 {% if object.author == user %}
                     <div>
                         <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
@@ -17,14 +18,18 @@
                     </div>
                 {% else %}
                     <div>
-                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="">Purchase with coins</a>
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-purchase' object.id  %}">Purchase with coins</a>
+                        {% else %}
+                            <a class="btn btn-outline-info mb-2" href="{% url 'login' %}">Login to purchase</a>
+                        {% endif %}
                     </div>
                 {% endif %}
                 {#  to filter date: post.date_posted| date:"F d, Y"(fullmonth day, year)#}
             </div>
             <h2 class="article-title">{{ object.title }}</h2>
             <p class="article-content">{{ object.content }}</p>
-            <img src="{{ post.image.url }}" alt="">
+            <img src="{{ object.image.url }}" alt="">
             <div class="row">
                 {% for pic in post.images_set.all %}
                     <div class="col-md-4">
@@ -48,7 +53,11 @@
               {{ comment.created_on }}
             </span>
           </p>
-          {{ comment.content | linebreaks }}
+            {% if comment.active %}
+                {{ comment.content | linebreaks }}
+            {% else %}
+                <p class="text-muted small">Your comment is being moderated</p>
+            {% endif %}
         </div>
         {% endfor %}
       <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-comment' object.id %}">Comment</a>
