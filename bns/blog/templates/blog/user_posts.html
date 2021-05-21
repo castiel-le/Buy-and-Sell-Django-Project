@@ -8,6 +8,7 @@
                 <div class="article-metadata">
                     <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
                     <small class="text-muted">{{ post.date_posted }}</small>
+                    <p class="text-capitalize">Price: {{ post.price }}</p>
                     {#  to filter date: post.date_posted| date:"F d, Y"(fullmonth day, year)#}
                 </div>
                 <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>

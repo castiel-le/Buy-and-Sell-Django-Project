@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/../../../../../../../../:\Kirill\Dawson\sem 4\Python\buy-and-sell-django-project\bns\.idea/dataSources/
+/dataSources.local.xml
+C:\Users\sosol\OneDrive\Documents\school\winter 2021\python\projects\420-420-team1\bns\__pycache__\manage.cpython-38.pyc
+C:\Users\sosol\OneDrive\Documents\school\winter 2021\python\projects\420-420-team1\bns\.idea\*
+C:\Users\sosol\OneDrive\Documents\school\winter 2021\python\projects\420-420-team1\bns\blog\migrations\*
+C:\Users\sosol\OneDrive\Documents\school\winter 2021\python\projects\420-420-team1\bns\blog\__pycache__\*
+C:\Users\sosol\OneDrive\Documents\school\winter 2021\python\projects\420-420-team1\.idea\*
+# Editor-based HTTP Client requests
+/httpRequests/
