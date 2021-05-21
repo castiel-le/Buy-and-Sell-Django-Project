@@ -19,7 +19,7 @@ class Post(models.Model):
     # use SET() to pass an author (i.e. "author deleted")
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.DecimalField(default=0, max_digits=6, decimal_places=2)
-    image = models.ImageField(blank=True, upload_to=post_directory_path)
+    image = models.ImageField(default='default_item.jpg', blank=True, upload_to=post_directory_path)
 
     def __str__(self):
         return self.title
