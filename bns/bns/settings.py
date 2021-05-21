@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,12 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-yiyru#h@!jfbu!lo2l2x6@gpt6rtar#!$+tz*z+&_#ns#0ijyw'
+# SECRET_KEY = 'django-insecure-yiyru#h@!jfbu!lo2l2x6@gpt6rtar#!$+tz*z+&_#ns#0ijyw'
+SECRET_KEY = '81d5f7c4a076a42008ac222b4cdf261b7a1d07204e85b56d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['djangobns.herokuapp.com']
 
 # Application definition
 
@@ -118,15 +120,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 # setting up folder for profile pics and any other media to 'root/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -144,3 +146,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'kirill.email.for.django@gmail.com'
 EMAIL_HOST_PASSWORD = 'ZV2r5pX9tEhtgJn'
 
+django_heroku.settings(locals())
