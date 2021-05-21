@@ -51,23 +51,7 @@
           {{ comment.content | linebreaks }}
         </div>
         {% endfor %}
-      </div>
-    </div>
-
-    <div class="col-md-8 card mb-4  mt-3 ">
-      <div class="card-body">
-        {% if new_comment %}
-        <div class="alert alert-success" role="alert">
-          Your comment is awaiting moderation
-        </div>
-        {% else %}
-        <h4>Leave a comment</h4>
-        <form method="post" enctype="multipart/form-data" style="margin-top: 1.3em;">
-          {{ comment_form.as_p }}
-          {% csrf_token %}
-          <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
-        </form>
-        {% endif %}
+      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-comment' object.id %}">Comment</a>
       </div>
     </div>
 

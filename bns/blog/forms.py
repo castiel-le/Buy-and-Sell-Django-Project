@@ -20,8 +20,6 @@ class ImageForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    content = forms.CharField(max_length=1500)
-
     class Meta:
         model = Comment
         fields = ('user', 'content',)
