@@ -5,10 +5,11 @@ from .models import Post, Images, Comment
 class PostForm(forms.ModelForm):
     title = forms.CharField(max_length=128)
     text = forms.CharField(max_length=245, label="Item Description.")
+    price = forms.DecimalField(max_digits=6, decimal_places=2)
 
     class Meta:
         model = Post
-        fields = ('title', 'text',)
+        fields = ('title', 'text', 'price')
 
 
 class ImageForm(forms.ModelForm):

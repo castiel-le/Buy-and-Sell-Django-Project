@@ -33,6 +33,7 @@
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
+                        <p class="nav-item nav-link">Welcome back, {{ user.username }}</p>
                         <p class="nav-item nav-link">Balance: {{ user.profile.moneys }}</p>
                         <a class="nav-item nav-link" href="{% url 'post-create' %}">New Post</a>
                         <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
@@ -61,7 +62,10 @@
         </div>
         <div class="col-md-4">
             <div class="content-section">
-                <h3>Your Sidebar</h3>
+                {% if user.is_authenticated %}
+                    <h3 class="nav-item nav-link">Hello, {{ user.username }}!</h3>
+                {% endif %}
+                <h4>Your Sidebar</h4>
                 <p class='text-muted'>Here you can find useful links and information about your account.</p>
                 <ul class="list-group">
                     <li class="list-group-item list-group-item-light"><a class="text-decoration-none link-info" href="{% url 'blog-home' %}">Latest Posts</a></li>

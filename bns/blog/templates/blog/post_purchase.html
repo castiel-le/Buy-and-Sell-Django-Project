@@ -1,14 +1,17 @@
 {% extends 'blog/base.html' %}
+{% load crispy_forms_filters %}
 {% block content %}
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Delete Post</legend>
-                <h2>Are you sure you want to delete "{{ object.title }}"?</h2>
+                <legend class="border-bottom mb-4">Purchase Item</legend>
+                <h2>Are you sure you want to purchase this item for {{ object.price }}?</h2>
+                <p>Please set a new price:</p>
+                {{ form|crispy }}
             </fieldset>
             <div class="form-group mt-3">
-                <button class="btn btn-outline-danger" type="submit">I agree to delete</button>
+                <button class="btn btn-outline-success" type="submit">I agree to pay</button>
                 <a class="btn btn-outline-secondary" href="{% url 'post-detail' object.id %}">Back to the post</a>
             </div>
         </form>

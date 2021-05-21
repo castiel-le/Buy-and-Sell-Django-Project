@@ -47,38 +47,66 @@ class UserPostListView(ListView):  # to display homepage with posts
         return Post.objects.filter(author=user).order_by('-date_posted')
 
 
+class PurchaseItemView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    fields = ['price', ]
+    template_name = 'blog/post_purchase.html'
+    success_url = reverse_lazy('blog-home')
+    success_message = "Item was purchased."
+
+    def form_valid(self, form):
+        self.request.user.profile.moneys -= form.instance.price  # taking money from current user
+        print(form.instance.author)
+        print(form.instance.author.profile.moneys)
+        form.instance.author.profile.moneys += form.instance.price  # giving money to the author
+        print(form.instance.author.profile.moneys)
+        form.instance.author.profile.save()
+        self.request.user.profile.save()
+        form.instance.author = self.request.user  # assigning the post author to the buyer
+        return super().form_valid(form)
+
+    # self.request.user.profile.moneys is the current user (buyer) money
+    # form.instance.price price of the post
+    # part of mixins, blocks users from editing other user's posts
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user != post.author:
+            return True
+        return False
+
+
 # view for each individual post
 #
 class PostDetailView(DetailView):  # each single post page
     model = Post
 
-    def post_detail_view(request, pk):
-        template_name = 'post_detail.html'
-        post = get_object_or_404(Post, pk=pk)
-        comments = post.comments.filter(active=True)
-        new_comment = None
-        # Comment posted
-        if request.method == 'POST':
-            comment_form = CommentForm(data=request.POST)
-            if comment_form.is_valid():
-                # Create Comment object but don't save to database yet
-                new_comment = comment_form.save(commit=False)
-                # Assign the current post to the comment
-                new_comment.post = post
-                # Save the comment to the database
-                new_comment.save()
-        else:
-            comment_form = CommentForm()
-
-        return render(request, template_name, {'post': post,
-                                               'comments': comments,
-                                               'new_comment': new_comment,
-                                               'comment_form': comment_form})
+    # def post_detail_view(request, pk):
+    #     template_name = 'post_detail.html'
+    #     post = get_object_or_404(Post, pk=pk)
+    #     comments = post.comments.filter(active=True)
+    #     new_comment = None
+    #     # Comment posted
+    #     if request.method == 'POST':
+    #         comment_form = CommentForm(data=request.POST)
+    #         if comment_form.is_valid():
+    #             # Create Comment object but don't save to database yet
+    #             new_comment = comment_form.save(commit=False)
+    #             # Assign the current post to the comment
+    #             new_comment.post = post
+    #             # Save the comment to the database
+    #             new_comment.save()
+    #     else:
+    #         comment_form = CommentForm()
+    #
+    #     return render(request, template_name, {'post': post,
+    #                                            'comments': comments,
+    #                                            'new_comment': new_comment,
+    #                                            'comment_form': comment_form})
 
 
 class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):  # creating new post view
     model = Post
-    fields = ['title', 'content', 'image']
+    fields = ['title', 'content', 'price', 'image']
     success_url = reverse_lazy('blog-home')
     success_message = "Post  about %(title)s was created"
 
@@ -91,7 +119,7 @@ class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):  # cr
 class PostUpdateView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixin,
                      UpdateView):
     model = Post
-    fields = ['title', 'content', 'image']
+    fields = ['title', 'content', 'price', 'image']
     success_url = reverse_lazy('blog-home')
     success_message = "Post  about %(title)s was updated"
 
@@ -123,4 +151,3 @@ class PostDeleteView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMixi
 # about page, nothing here yet anyway
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
-
