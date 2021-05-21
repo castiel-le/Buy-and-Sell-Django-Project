@@ -56,10 +56,7 @@ class PurchaseItemView(LoginRequiredMixin, SuccessMessageMixin, UserPassesTestMi
 
     def form_valid(self, form):
         self.request.user.profile.moneys -= form.instance.price  # taking money from current user
-        print(form.instance.author)
-        print(form.instance.author.profile.moneys)
         form.instance.author.profile.moneys += form.instance.price  # giving money to the author
-        print(form.instance.author.profile.moneys)
         form.instance.author.profile.save()
         self.request.user.profile.save()
         form.instance.author = self.request.user  # assigning the post author to the buyer
