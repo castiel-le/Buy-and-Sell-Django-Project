@@ -25,5 +25,5 @@ Admin page has access to:
 
 INSTRUCTIONS TO LAUNCH:
     Use master branch for a local deployment, clone it and open the bns folder inside with your IDE. Requirements.txt contain all neccesary modules for the app
-    Heroku-deployment-overhaul is the repo that was used for herou deployment. IT WILL NOT WORK ON LOCAL!
+    Heroku-deployment-overhaul is the repo that was used for heroku deployment. IT WILL NOT WORK ON LOCAL!
     
